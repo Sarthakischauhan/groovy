@@ -18,7 +18,6 @@ export default async function Home() {
   return (
     <>
       <div className="sm:w-9/10 md:w-3/5 mx-auto">
-        <Navbar />
         <ManagementHeader />
         <div className="w-full p-4">
             <ExpenseTable expenses={expenses as Expense[]} />
