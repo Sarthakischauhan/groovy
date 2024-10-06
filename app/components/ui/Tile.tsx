@@ -52,5 +52,17 @@ const TileInfo= React.forwardRef<
 ))
 TileInfo.displayName = "TileInfo"
 
+const TileSecondInfo = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({className, ...props}, ref) => (
+    <div ref={ref}
+    className={cn(
+        "flex-0", className
+    )}
+    {...props}
+    />
+));
 
-export { Tile, TileImage, TileInfo };
+TileSecondInfo.displayName = "Status_date"
+export { Tile, TileImage, TileInfo, TileSecondInfo };
