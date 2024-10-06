@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
     A tag  
 */
 
+
 // Same as Card implementation of Shadcn
 const Tile = React.forwardRef<
     HTMLDivElement,
@@ -17,7 +18,7 @@ const Tile = React.forwardRef<
 >(({className, ...props} , ref) => (
     <div ref={ref}
     className={cn(
-        "rounded-xl bg-card text-card-foreground shadow", className
+        "tile rounded-s bg-card text-card-foreground", className
     )}
     {...props}
     />
@@ -31,11 +32,25 @@ const TileImage = React.forwardRef<
 >(({className, ...props}, ref) => (
     <div ref={ref} 
     className={cn(
-        "w-full"
+        "flex-none", className
     )}
     {...props}
     />
 ))
 TileImage.displayName = "TileImage";
 
-export { Tile, TileImage };
+const TileInfo= React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({className, ...props}, ref) => (
+    <div ref={ref} 
+    className={cn(
+        "flex-1", className
+    )}
+    {...props}
+    />
+))
+TileInfo.displayName = "TileInfo"
+
+
+export { Tile, TileImage, TileInfo };

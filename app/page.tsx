@@ -19,7 +19,8 @@ export default async function Home() {
     <>
       <div className="sm:w-9/10 md:w-3/5 mx-auto">
         <ManagementHeader />
-        <div className="w-full p-4">
+        <div className="w-full">
+            <h1 className="w-full p-4 text-l md:text-3xl font-inter">Recent Expense</h1>
             <ExpenseTable expenses={expenses as Expense[]} />
         </div>
       </div>
