@@ -1,43 +1,71 @@
 import React from "react";
 import moment from "moment";
 import {Tile, TileImage, TileInfo, TileSecondInfo} from "@/app/components/ui/Tile";
-import { Coffee } from "lucide-react";
+import { Coffee, ShoppingCart, DollarSign, Trash2, Edit2} from "lucide-react";
+import { Badge } from "@/app/components/ui/Badge"
+import { Button } from "@/app/components/ui/Button"
 
-  import { Expense, ExpenseTableProps } from "./ExpenseInterface"; 
-  
-  const  ExpenseTable:React.FC<ExpenseTableProps> = ({expenses}) =>{
-    return (
-      <div className="container flex flex-col w-full p-4 space-y-2 items-center">
-          {expenses.map((expense:any, key:number) => (
-              <Tile className={`w-full flex p-5 ${!expense.necessary ? 'bg-red-200/15' : 'bg-green-200/15'}`} key={key}>
-                <TileImage className="tile-icon self-center">
-                    <div className="rounded-full p-2 bg-green-500/45">
-                      <Coffee width={25} height={25} />
-                    </div>
-                </TileImage>
-                <TileInfo className="flex-1">
-                    <div className="flex flex-col">
-                      <h2 className="text-lg font-semibold">
-                        {expense.name}
-                      </h2>
-                      <h2 className="text-[14px]">
-                        ${expense.amount}
-                      </h2>
-                    </div>
-                </TileInfo>
-                <TileSecondInfo className="status">
-                  <div className="rounded-full  bg-green-500/45 text-center text-[12px]">
-                    {!expense.necessary ? "Needed" : "Not Needed"}
-                  </div>
-                  <div className="date text-[12px] font-semibold">
-                    {moment(new Date(expense.date_posted)).format("MMMM Do, h:mm a")}
-                  </div>
-                </TileSecondInfo>
-              </Tile>
-          ))}
-      </div>
-    )
+
+
+import { Expense, ExpenseTableProps } from "./ExpenseInterface"; 
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case 'Food':
+      return <Coffee className="h-5 w-5" />
+    case 'Groceries':
+      return <ShoppingCart className="h-5 w-5" />
+    default:
+      return <DollarSign className="h-5 w-5" />
   }
+}
+
+
+const  ExpenseTable:React.FC<ExpenseTableProps> = ({expenses}) =>{
+  return (
+    <div className="w-full mx-auto p-4 space-y-4 font-inter">
+      {expenses.map((expense) => (
+        <Tile 
+          key={expense.id} 
+          className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div className="flex items-center space-x-4">
+            <TileImage>
+              <div className={`p-2 rounded-full ${expense.necessary ? 'bg-green-100' : 'bg-red-100'}`}>
+                {getCategoryIcon(expense.type)}
+              </div>
+            </TileImage>
+            <TileInfo>
+              <h2 className="font-bold text-lg">{expense.name}</h2>
+              <p className="text-sm text-gray-500">
+                {new Date(expense.date_posted).toLocaleString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                  hour12: true
+                })}
+              </p>
+            </TileInfo>
+          </div>
+          <TileSecondInfo className="flex items-center space-x-4">
+            <p className="font-bold">${expense.amount.toFixed(2)}</p>
+            <Badge variant={expense.necessary ? "secondary" : "outline"}>
+              {expense.necessary ? 'Needed' : 'Not Needed'}
+            </Badge>
+            <div className="flex space-x-2">
+              <Button variant="ghost" size="icon">
+                <Edit2 className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="icon">
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </TileSecondInfo>
+        </Tile>
+      ))}
+    </div>
+  )
+}
 
 
   export default ExpenseTable;
