@@ -64,5 +64,5 @@ const TileSecondInfo = React.forwardRef<
     />
 ));
 
-TileSecondInfo.displayName = "Status_date"
+TileSecondInfo.displayName = "Second TileInfo"
 export { Tile, TileImage, TileInfo, TileSecondInfo };

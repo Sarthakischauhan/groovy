@@ -1,4 +1,6 @@
+"use client"
 import React from 'react'
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent,  CardFooter } from './ui/Card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/Carousel"
 import { Wallet, ArrowUpIcon, CalendarIcon, TrendingUpIcon } from "lucide-react";
@@ -6,14 +8,35 @@ import moment from 'moment';
 import supabase from "@/utils/supabase";
 import Greeting from './Greeting';
 import { Button } from './ui/Button';
+import { useModal } from '@/hooks/useModal'; 
+
+
+const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>, modalName: string) => {
+  event.preventDefault();
+  // Not working but this will be the implementation going forward 
+  const { openModal } = useModal();
+
+  switch (modalName) {
+    case 'addExpense':
+      openModal('AddExpenseModal');
+      break;
+    case 'addIncome':
+      openModal('AddIncomeModal');
+      break;
+    // Add more cases as needed
+    default:
+      console.log(`No modal defined for ${modalName}`);
+  }
+}
+
 
 export const ManagementHeader = async() => {
   const {data: users, error} = await supabase.from("users").select("*").eq("id",2);
   const {current_credit,incoming_income, current_balance, name, estimated_expenses} = users && users[0];
   const tiles = [
-    { title: "Current Credit", icon: <ArrowUpIcon className="h-4 w-4 text-red-500" />, amount:current_credit, actions:[<Button>Add Expense</Button>] },
-    { title: "Current Balance", icon: <Wallet className="h-4 w-4 text-green-500" />, amount:current_balance, actions:[<Button>Add Income</Button>]},
-    { title: "Estimated Income", icon: <TrendingUpIcon className="h-4 w-4 text-purple-500" />, amount:incoming_income, actions:[<Button>Add Income</Button>]},
+    { title: "Current Credit", icon: <ArrowUpIcon className="h-4 w-4 text-red-500" />, amount:current_credit, actions:[<Button onClick={(e) => onButtonClick(e, "addExpense")}>Add Expense</Button>] },
+    { title: "Current Balance", icon: <Wallet className="h-4 w-4 text-green-500" />, amount:current_balance, actions:[<Button onClick={(e) => onButtonClick(e, "addIncome")}>Add Income</Button>]},
+    { title: "Estimated Income", icon: <TrendingUpIcon className="h-4 w-4 text-purple-500" />, amount:incoming_income, actions:[<Button onClick={(e) => onButtonClick(e, "addIncome")}>Add Income</Button>]},
     { title: "Estimates expenses", icon: <CalendarIcon className="h-4 w-4 text-blue-500" />, amount:estimated_expenses, actions:[] },
   ]
   return (
