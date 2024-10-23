@@ -5,8 +5,7 @@ import ExpenseTable from "./components/ExpenseTable/ExpenseTable";
 import supabase from "@/utils/supabase";
 import {Expense} from "@/app/components/ExpenseTable/ExpenseInterface";
 import { ManagementHeader } from "./components/ManagementHeader";
-import { Button } from "./components/ui/Button";
-import { Plus } from "lucide-react";
+
 
 
 export const revalidate = 60;
@@ -17,11 +16,12 @@ export default async function Home() {
   let { data: expenses, error } = await supabase
   .from('expenses')
   .select('*').order('date_posted', {ascending: false});
-  
+
+  const {data: users, error:userError} = await supabase.from("users").select("*").eq("id",2); 
   return (
     <>
       <div className="sm:w-9/10 md:w-3/5 mx-auto">
-        <ManagementHeader />
+        <ManagementHeader users={users} />
         <div className="w-full">
 
             <h1 className="w-full p-4 text-l md:text-3xl font-semibold font-inter">Recent Expense</h1>
