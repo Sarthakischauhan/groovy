@@ -5,7 +5,7 @@ import ExpenseTable from "./components/ExpenseTable/ExpenseTable";
 import supabase from "@/utils/supabase";
 import {Expense} from "@/app/components/ExpenseTable/ExpenseInterface";
 import { ManagementHeader } from "./components/ManagementHeader";
-
+import { getDateWeekBack } from "@/utils/utils";
 
 
 export const revalidate = 60;
@@ -15,7 +15,9 @@ export default async function Home() {
 
   let { data: expenses, error } = await supabase
   .from('expenses')
-  .select('*').order('date_posted', {ascending: false});
+  .select('*')
+  .gte("date_posted", getDateWeekBack()) 
+  .order('date_posted', {ascending: false});
 
   const {data: users, error:userError} = await supabase.from("users").select("*").eq("id",2); 
   return (
