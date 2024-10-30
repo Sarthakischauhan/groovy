@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar/Navbar";
 import data from './data/dummy.js';
 import ExpenseTable from "./components/ExpenseTable/ExpenseTable";
-
+import { auth } from "@/utils/auth";
 import supabase from "@/utils/supabase";
 import {Expense} from "@/app/components/ExpenseTable/ExpenseInterface";
 import { ManagementHeader } from "./components/ManagementHeader";
@@ -10,7 +10,7 @@ import { getDateWeekBack } from "@/utils/utils";
 
 export const revalidate = 60;
 export default async function Home() {
-  const userName = "Sarthak Chauhan";
+  const name  = auth.name;
   const { money } = data;
 
   let { data: expenses, error } = await supabase
