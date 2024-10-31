@@ -32,7 +32,7 @@ export default function SignIn() {
             </div>
         </CardContent>
         <CardFooter>
-          <p>Card Footer</p>
+          <p className="font-inter">Contact <a href="mailto:sarthak.chauhan@sjsu.edu">Sarthak</a> for credentials</p>
         </CardFooter>
       </Card>
     </form>

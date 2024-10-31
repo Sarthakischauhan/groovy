@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, CheckCircle, DollarSign } from 'lucide-react'
+import { ChevronRight, CheckCircle, DollarSign, Wallet } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/Card";
 import { Button } from "../components/ui/Button"
 import { Input } from "../components/ui/Input"
@@ -10,10 +10,10 @@ import { Label } from "../components/ui/Label"
 export default function FinancialOnboarding() {
   const [step, setStep] = useState(0)
   const [financialInfo, setFinancialInfo] = useState({
-    netWorth: '',
-    creditBalance: '',
-    estimatedIncome: '',
-    estimatedExpenses: ''
+    netWorth: undefined,
+    creditBalance: undefined,
+    estimatedIncome: undefined,
+    estimatedExpenses: undefined,
   })
 
   const steps = [
@@ -63,15 +63,14 @@ export default function FinancialOnboarding() {
     handleNextStep()
   }
 
-  const formatCurrency = (value: string) => {
-    const number = parseFloat(value)
+  const formatCurrency = (value: number) => {
+    let valueInString = (value as unknown) as string
+    const number = parseFloat(valueInString)
     return isNaN(number) ? '$0' : `$${number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
 
   const handleComplete = () => {
-    alert("Onboarding complete! Your financial information has been saved.")
-    // Here you would typically save the data and redirect to the dashboard
-    // For example: saveData(financialInfo).then(() => router.push('/dashboard'))
+
   }
 
   return (
@@ -105,7 +104,7 @@ export default function FinancialOnboarding() {
                   <div className="space-y-4">
                     <Label htmlFor={steps[step].field}>{steps[step].description}</Label>
                     <div className="relative">
-                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <Wallet className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       <Input
                         type="number"
                         id={steps[step].field}
@@ -134,10 +133,7 @@ export default function FinancialOnboarding() {
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
                   </motion.div>
                   <div className="space-y-2">
-                    <p>Net Worth: {formatCurrency(financialInfo.netWorth)}</p>
-                    <p>Credit Balance: {formatCurrency(financialInfo.creditBalance)}</p>
-                    <p>Estimated Income: {formatCurrency(financialInfo.estimatedIncome)}</p>
-                    <p>Estimated Expenses: {formatCurrency(financialInfo.estimatedExpenses)}</p>
+                    You are all set to proceed! Enjoy Groovy for all your expense tracking needs
                   </div>
                   <Button onClick={handleComplete} className="w-full">
                     Go to Dashboard
