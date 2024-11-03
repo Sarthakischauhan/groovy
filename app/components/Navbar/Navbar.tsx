@@ -27,23 +27,22 @@ const Navbar: React.FC<NavbarProps> = async () => {
       <div className="text-2xl font-bold font-antonio"><a href="/">Groovy</a></div>
       {session && 
       <div className="space-x-4 flex items-center">
-        <form action= {async () => {
-            'use server';
-            await signOut();
-          }}
-        >
-        </form>
+
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Image className="rounded-full" src="https://avatars.githubusercontent.com/u/62596924?v=4" alt="sample" width="40" height="40" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>View profile</DropdownMenuItem>
-            <DropdownMenuItem>Edit image</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete image</DropdownMenuItem>
+            <DropdownMenuItem>
+              <form action= {async () => {
+              'use server';
+              await signOut();
+              }}
+              >
+                <Button type="submit">Logout</Button>
+              </form>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 

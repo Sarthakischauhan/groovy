@@ -5,7 +5,6 @@ import React from 'react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent,  CardFooter } from './ui/Card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/Carousel"
 import { Wallet, ArrowUpIcon, CalendarIcon, TrendingUpIcon } from "lucide-react";
-import moment from 'moment';
 import supabase from "@/utils/supabase";
 import Greeting from './Greeting';
 import useModal from '@/app/hooks/useModal'; 
