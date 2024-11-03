@@ -1,7 +1,22 @@
 import Link from "next/link";
+import Image from "next/image"
 import { auth, signOut } from "@/utils/auth";
 import { Button } from "../ui/Button";
 import { ExitIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "../ui/Dropdown"
 
 interface NavbarProps{};
 
@@ -12,17 +27,25 @@ const Navbar: React.FC<NavbarProps> = async () => {
       <div className="text-2xl font-bold font-antonio"><a href="/">Groovy</a></div>
       {session && 
       <div className="space-x-4 flex items-center">
-        <Link href="/" className="hover:text-gray-600">Dashboard</Link>
-        <Link href="/questions" className="hover:text-gray-600">Questions</Link>
         <form action= {async () => {
             'use server';
             await signOut();
           }}
         >
-          <Button className="signout">
-            <ExitIcon />
-          </Button>
         </form>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Image className="rounded-full" src="https://avatars.githubusercontent.com/u/62596924?v=4" alt="sample" width="40" height="40" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>View profile</DropdownMenuItem>
+            <DropdownMenuItem>Edit image</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Delete image</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
       </div>
       }

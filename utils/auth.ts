@@ -30,8 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         return "/onboard"
       }
-      console.log("Everything works fine")
-      return "/onboard";
+      return true;
     }
   }
 })
