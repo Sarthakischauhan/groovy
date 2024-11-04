@@ -47,9 +47,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         console.error("Error fetching isOnboarded status:", error.message);
         session.user.isLoggedIn = false; // Default to false on error
       } else {
-        session.user.isLoggedIn = data.isOnboarded;
+        session.user.isLoggedIn = true
+        session.user.isOnboarded = data.isOnboarded
       }
-
       return session;
     }
   }

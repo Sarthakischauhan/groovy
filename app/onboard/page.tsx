@@ -12,10 +12,8 @@ import { redirect } from 'next/navigation'
 
 export default function FinancialOnboarding() {
   const { data: session } = useSession() 
-  console.log("Session",session)
   if (session?.user?.isOnboarded) {
-    console.log("This ran sucessful")
-    redirect("/dashboard")
+    redirect("/")
   }
   const [step, setStep] = useState(0)
   const [financialInfo, setFinancialInfo] = useState({

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Noto_Music } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
-import { SessionProvider } from "next-auth/react";
-
+import AuthContext from "@/utils/authContext";
 const inter = Inter({ subsets: ["latin"] });
 // const notoMusic = Noto_Music({ weight:['100','200'],subsets:["latin"] });
 export const metadata: Metadata = {
@@ -19,10 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} `}>
-        <SessionProvider>
+        <AuthContext>
           <Navbar />
           {children}
-        </SessionProvider>
+        </AuthContext>
       </body>
     </html>
   );
