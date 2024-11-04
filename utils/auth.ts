@@ -20,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!data){
 
         const {error: insertError} = await supabase.from("users").insert(
-          [{email:user.email, mame:user.name}]
+          [{email:user.email, name:user.name}]
         );
 
         if (insertError){
@@ -30,7 +30,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         return "/onboard"
       }
+
+      if (!data.isOnboarded){
+        return "/onboard"
+      }
       return true;
+    }, 
+
+    async session({session, user}){
+      const { data, error } = await supabase
+      .from("users")
+      .select("isOnboarded")
+      .eq("email", session.user.email)
+      .single();
+      if (error) {
+        console.error("Error fetching isOnboarded status:", error.message);
+        session.user.isLoggedIn = false; // Default to false on error
+      } else {
+        session.user.isLoggedIn = data.isOnboarded;
+      }
+
+      return session;
     }
   }
 })

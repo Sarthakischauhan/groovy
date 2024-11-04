@@ -47,7 +47,7 @@ export default async function Home() {
 
   return (
     <>
-      {userData ? (
+      {userData?.isOnboarded ? (
         <div className="sm:w-9/10 md:w-3/5 mx-auto">
           <ManagementHeader users={[userData]} />
           <div className="w-full">

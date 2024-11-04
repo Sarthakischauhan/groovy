@@ -6,8 +6,17 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "../components/ui/Button"
 import { Input } from "../components/ui/Input"
 import { Label } from "../components/ui/Label"
+import supabase from "@/utils/supabase"
+import { useSession } from "next-auth/react"
+import { redirect } from 'next/navigation'
 
 export default function FinancialOnboarding() {
+  const { data: session } = useSession() 
+  console.log("Session",session)
+  if (session?.user?.isOnboarded) {
+    console.log("This ran sucessful")
+    redirect("/dashboard")
+  }
   const [step, setStep] = useState(0)
   const [financialInfo, setFinancialInfo] = useState({
     netWorth: undefined,
@@ -15,7 +24,6 @@ export default function FinancialOnboarding() {
     estimatedIncome: undefined,
     estimatedExpenses: undefined,
   })
-
   const steps = [
     {
       title: "Welcome to FinTrack",
@@ -69,8 +77,10 @@ export default function FinancialOnboarding() {
     return isNaN(number) ? '$0' : `$${number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
 
-  const handleComplete = () => {
-
+  const handleComplete = async () => {
+    const {error: insertError} = await supabase.from("users").update(
+      [{isOnboarded:true}]
+    ).eq("email",session?.user?.email).select();
   }
 
   return (

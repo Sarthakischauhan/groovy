@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Noto_Music } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 // const notoMusic = Noto_Music({ weight:['100','200'],subsets:["latin"] });
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} `}>
-        <Navbar />
-        {children}
+        <SessionProvider>
+          <Navbar />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );
