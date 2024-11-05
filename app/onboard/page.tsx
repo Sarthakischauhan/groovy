@@ -12,6 +12,7 @@ import { redirect } from 'next/navigation'
 
 export default function FinancialOnboarding() {
   const { data: session } = useSession() 
+  console.log("Session",session)
   if (session?.user?.isOnboarded) {
     redirect("/")
   }
@@ -76,10 +77,29 @@ export default function FinancialOnboarding() {
   }
 
   const handleComplete = async () => {
-    const {error: insertError} = await supabase.from("users").update(
-      [{isOnboarded:true}]
-    ).eq("email",session?.user?.email).select();
-  }
+    try {
+      const { error } = await supabase
+        .from("users")
+        .update({
+          current_balance: financialInfo.netWorth,
+          current_credit: financialInfo.creditBalance,
+          incoming_income: financialInfo.estimatedIncome,
+          estimated_expenses: financialInfo.estimatedExpenses,
+          isOnboarded: true
+        })
+        .eq("email", session?.user?.email);
+
+      if (error) {
+        console.error("Error updating user:", error);
+        return;
+      }
+
+      // Redirect to dashboard after successful update
+      redirect("/");
+    } catch (error) {
+      console.error("Error in handleComplete:", error);
+    }
+  };
 
   return (
     <div className=" flex items-center justify-center p-4">

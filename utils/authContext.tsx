@@ -6,7 +6,6 @@ export interface AuthContextProps {
   children: React.ReactNode;
 }
 
-export default async function AuthContext({ children }: AuthContextProps) {
-  const session = await auth();
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+export default  function AuthContext({ children }: AuthContextProps) {
+  return <SessionProvider refetchInterval={0}>{children}</SessionProvider>;
 }

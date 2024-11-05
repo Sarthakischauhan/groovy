@@ -37,7 +37,6 @@ export default async function Home() {
   const session = await auth();
   let userData = null;
   let expenses = [] as Expense[];
-
   if (session) {
     userData = await fetchUserData(session?.user?.email as string);
     if (userData) {
@@ -47,7 +46,7 @@ export default async function Home() {
 
   return (
     <>
-      {userData?.isOnboarded ? (
+      {(userData && session?.user?.isLoggedIn) ? (
         <div className="sm:w-9/10 md:w-3/5 mx-auto">
           <ManagementHeader users={[userData]} />
           <div className="w-full">

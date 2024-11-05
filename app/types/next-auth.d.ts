@@ -1,8 +1,13 @@
-import NextAuth from "next-auth";
+import NextAuth, {DefaultSession} from "next-auth";
 
 declare module 'next-auth' {
     interface User { 
-        isLoggedIn ?: boolean;
         isOnboarded ?: boolean;
-    } 
+        isLoggedIn ?: boolean;
+    }
+
+    interface Session {
+        user: User &
+        DefaultSession["user"]
+    }
 }
