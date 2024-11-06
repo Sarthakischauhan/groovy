@@ -4,7 +4,7 @@ import supabase from "./supabase"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [GitHub],
-  callbacks:{
+  callbacks: {
     async signIn({user}){
       const { data, error } = await supabase
       .from("users")
@@ -13,43 +13,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       .single();
       
       if (error){
-       console.log("there was an error in processing user data")
-       return "/login"
+        console.log("there was an error in processing user data")
+        return false;
       }
 
       if (!data){
-
         const {error: insertError} = await supabase.from("users").insert(
-          [{email:user.email, name:user.name}]
+          [{email:user.email, name:user.name, isOnboarded: false}]
         );
 
         if (insertError){
           console.log("Error while adding the user before onboarding")
-          return "/login"
+          return false;
         }
-
-        return "/onboard"
+        user.isOnboarded = false;
+        return true 
       }
-
-      if (!data.isOnboarded){
-        return "/onboard"
-      }
+      user.isOnboarded = data?.isOnboarded
       return true;
-    }, 
+    },
 
-    async session({session, user}){
-      const { data, error } = await supabase
-      .from("users")
-      .select("isOnboarded")
-      .eq("email", session.user.email)
-      .single();
-      if (error) {
-        console.error("Error fetching isOnboarded status:", error.message);
-        session.user.isLoggedIn = false; // Default to false on error
-      } else {
-        session.user.isLoggedIn = true
-        session.user.isOnboarded = data.isOnboarded
+    async jwt({ token, user }) {
+      if (user) {
+        token.isLoggedIn = true;
+        token.isOnboarded = user.isOnboarded;
       }
+      return token;
+    },
+
+    async session({ session, token }) {
+      session.user.isLoggedIn = token.isLoggedIn;
+      session.user.isOnboarded = token.isOnboarded;
       return session;
     }
   }
