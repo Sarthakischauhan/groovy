@@ -6,11 +6,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "../components/ui/Button"
 import { Input } from "../components/ui/Input"
 import { Label } from "../components/ui/Label"
-import supabase from "@/utils/supabase"
+import supabase from "utils/supabase"
 import { useSession } from "next-auth/react"
-import { redirect } from 'next/navigation'
-
+import { useRouter } from "next/router";
 export default function OnBoarding() {
+  const router = useRouter();
   const { data: session, status } = useSession() 
   const [step, setStep] = useState(0)
   const [financialInfo, setFinancialInfo] = useState({
@@ -53,6 +53,9 @@ export default function OnBoarding() {
   const handleNextStep = () => {
     if (step < steps.length - 1) {
       setStep(step + 1)
+    }   
+    if ( step === steps.length - 2){
+      handleComplete();
     }
   }
 
@@ -90,15 +93,18 @@ export default function OnBoarding() {
         return;
       }
       // Redirect to dashboard after successful update
-      redirect("/");
+      if(session){
+        session.user.isOnboarded = true;
+      }
+      router.push("/");
     } catch (error) {
       console.error("Error in handleComplete:", error);
     }
   };
 
   return (
-    <div className=" flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex items-center justify-center align-center p-4">  
+      <Card className="w-full max-w-md mt-[50px]">
         <CardHeader>
           <CardTitle>{steps[step].title}</CardTitle>
           <CardDescription>{steps[step].description}</CardDescription>
