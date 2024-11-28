@@ -1,19 +1,16 @@
 "use client"
-
-
 import React from 'react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent,  CardFooter } from './ui/Card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/Carousel"
 import { Wallet, ArrowUpIcon, CalendarIcon, TrendingUpIcon } from "lucide-react";
-import supabase from "@/utils/supabase";
+import supabase from "utils/supabase";
 import Greeting from './Greeting';
-import useModal from '@/app/hooks/useModal'; 
+import useModal from "@/hooks/useModal"
 import { Button } from './ui/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './ui/Dialog';
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Expense } from './ExpenseTable/ExpenseInterface';
-
 
 export const ManagementHeader = ({users}) => {
   
