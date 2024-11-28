@@ -11,9 +11,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Expense } from './ExpenseTable/ExpenseInterface';
+import { useSession } from "next-auth/react"
 
 export const ManagementHeader = ({users}) => {
-  
+  const {data: session, status } = useSession() 
   const { currentMode, handleModal, isActive, setIsActive } = useModal();
   const {current_credit,incoming_income, current_balance, name, estimated_expenses} = users && users[0];
   const [formData, setFormData] = React.useState<Expense>({
@@ -41,6 +42,7 @@ export const ManagementHeader = ({users}) => {
             date_posted: formData.date_posted || new Date().toISOString(),
             type: "credit",
             name: formData.name,
+            user_id:session?.user?.id
           }
         ]);
 

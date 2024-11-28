@@ -44,6 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       session.user.isLoggedIn = token.isLoggedIn;
       session.user.isOnboarded = token.isOnboarded;
+      session.user.id = token.sub;
       return session;
     }
   }
