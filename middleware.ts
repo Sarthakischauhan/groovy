@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from "@/utils/auth";
+import { auth } from "utils/auth";
 
 export async function middleware(req: NextRequest) {
   const session = await auth(); // Validate session

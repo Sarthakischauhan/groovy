@@ -1,4 +1,4 @@
-import { signIn } from "@/utils/auth"
+import { signIn } from "utils/auth"
 import {
   Card,
   CardContent,
@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/app/components/ui/Card";
+} from "@/components/ui/Card";
 import { Button } from "./ui/Button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image"
-import { auth, signOut } from "@/utils/auth";
+import { auth, signOut } from "utils/auth";
 import { Button } from "../ui/Button";
 import { ExitIcon } from "@radix-ui/react-icons";
 import {
