@@ -1,9 +1,9 @@
 import React from "react";
 import moment from "moment";
-import {Tile, TileImage, TileInfo, TileSecondInfo} from "@/app/components/ui/Tile";
+import {Tile, TileImage, TileInfo, TileSecondInfo} from "@/components/ui/Tile";
 import { Coffee, ShoppingCart, DollarSign, Trash2, Edit2} from "lucide-react";
-import { Badge } from "@/app/components/ui/Badge"
-import { Button } from "@/app/components/ui/Button"
+import { Badge } from "@/components/ui/Badge"
+import { Button } from "@/components/ui/Button"
 
 
 
@@ -37,13 +37,7 @@ const  ExpenseTable:React.FC<ExpenseTableProps> = ({expenses}) =>{
             <TileInfo>
               <h2 className="font-bold text-lg">{expense.name}</h2>
               <p className="text-sm text-gray-500">
-                {new Date(expense.date_posted).toLocaleString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  hour: 'numeric',
-                  minute: 'numeric',
-                  hour12: true
-                })}
+                {moment(expense.date_posted).parseZone().calendar() }
               </p>
             </TileInfo>
           </div>

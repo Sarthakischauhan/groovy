@@ -1,10 +1,10 @@
 import data from './data/dummy.js';
 import ExpenseTable from "./components/ExpenseTable/ExpenseTable";
-import { auth } from "@/utils/auth";
-import supabase from "@/utils/supabase";
-import { Expense } from "@/app/components/ExpenseTable/ExpenseInterface";
+import { auth } from "utils/auth";
+import supabase from "utils/supabase";
+import { Expense } from "@/components/ExpenseTable/ExpenseInterface";
 import { ManagementHeader } from "./components/ManagementHeader";
-import { getDateWeekBack } from "@/utils/utils";
+import { getDateWeekBack } from "utils/utils";
 
 export const revalidate = 60;
 
@@ -19,11 +19,11 @@ const fetchUserData = async (email : string) => {
 };
 
 
-const fetchExpensesData = async (userId : string) => {
+const fetchExpensesData = async (userId : number) => {
   const { data, error } = await supabase
     .from("expenses")
     .select("*")
-    .eq("id", userId)
+    .eq("user_id", userId)
     .gte("date_posted", getDateWeekBack())
     .order("date_posted", { ascending: false });
   if (error) {
@@ -40,7 +40,7 @@ export default async function Home() {
   if (session) {
     userData = await fetchUserData(session?.user?.email as string);
     if (userData) {
-      expenses = await fetchExpensesData(userData.id);
+      expenses = await fetchExpensesData(2);
     }
   }
 
