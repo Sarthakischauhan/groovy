@@ -8,7 +8,8 @@ import { Input } from "../components/ui/Input"
 import { Label } from "../components/ui/Label"
 import supabase from "utils/supabase"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+
 export default function OnBoarding() {
   const router = useRouter();
   const { data: session, status } = useSession() 

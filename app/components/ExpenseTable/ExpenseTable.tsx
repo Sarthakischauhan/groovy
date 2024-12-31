@@ -62,4 +62,4 @@ const  ExpenseTable:React.FC<ExpenseTableProps> = ({expenses}) =>{
 }
 
 
-  export default ExpenseTable;
+export default ExpenseTable;
