@@ -2,6 +2,7 @@ import React from 'react';
 
 interface GreetingProps {
   name: string;
+  existingUser: boolean 
 }
 
 const Greeting: React.FC<GreetingProps> = ({ name }) => {

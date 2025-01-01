@@ -142,7 +142,7 @@ export default function OnBoarding() {
 
   return (
     <div className="flex flex-col text-left sm:w-9/10 md:w-3/5 mx-auto justify-center align-center p-4">  
-      <Greeting name={session?.user?.name} />
+      {step == 0 ? <Greeting name={session?.user?.name || ""} existingUser={false} /> : <></>}
       <Card className="w-full mt-[30px] rounded-sm">
         <CardHeader>
           <CardTitle>{steps[step].title}</CardTitle>
@@ -205,7 +205,7 @@ export default function OnBoarding() {
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
                   </motion.div>
                   <div className="space-y-2">
-                    You are all set to proceed! Enjoy FinTrack for all your expense tracking needs
+                    You are all set to proceed! Enjoy Groovy for all your expense tracking needs
                   </div>
                   <Button onClick={handleComplete} className="w-full">
                     Go to Dashboard
