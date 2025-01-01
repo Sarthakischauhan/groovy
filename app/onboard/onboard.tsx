@@ -1,26 +1,50 @@
 "use client"
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, CheckCircle, DollarSign, Wallet } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/Card";
+import { ChevronRight, CheckCircle, DollarSign, Wallet, BanknoteIcon as Bank, PenTool } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/Card"
 import { Button } from "../components/ui/Button"
 import { Input } from "../components/ui/Input"
 import { Label } from "../components/ui/Label"
 import supabase from "utils/supabase"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
+import { SelectCard } from '@/components/ui/SelectCard'
+import { Option } from '@/components/ui/interfaces/SelectCardInterface'
+import Greeting from '@/components/Greeting'
 
 export default function OnBoarding() {
-  const router = useRouter();
+  const router = useRouter()
   const { data: session, status } = useSession() 
   const [step, setStep] = useState(0)
+  const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null)
   const [financialInfo, setFinancialInfo] = useState({
     netWorth: undefined,
     creditBalance: undefined,
     estimatedIncome: undefined,
     estimatedExpenses: undefined,
   })
+
+  const onboardingOptions = [
+    {
+      id: "plaid",
+      title: "Plaid-based Onboarding",
+      desc: "Connect your bank accounts securely using Plaid",
+      icon: <Bank className="w-6 h-6" />,
+    },
+    {
+      id: "manual",
+      title: "Manual Onboarding",
+      desc: "Manually enter your financial information",
+      icon: <PenTool className="w-6 h-6" />,
+    },
+  ] 
+
   const steps = [
+    {
+      title: "Choose Your Onboarding Method",
+      description: "Select how you'd like to provide your financial information.",
+    },
     {
       title: "Welcome to FinTrack",
       description: "Let's gather some information to help you manage your finances better.",
@@ -55,8 +79,8 @@ export default function OnBoarding() {
     if (step < steps.length - 1) {
       setStep(step + 1)
     }   
-    if ( step === steps.length - 2){
-      handleComplete();
+    if (step === steps.length - 2) {
+      handleComplete()
     }
   }
 
@@ -87,25 +111,39 @@ export default function OnBoarding() {
           estimated_expenses: financialInfo.estimatedExpenses,
           isOnboarded: true
         })
-        .eq("email", session?.user?.email);
+        .eq("email", session?.user?.email)
 
       if (error) {
-        console.error("Error updating user:", error);
-        return;
+        console.error("Error updating user:", error)
+        return
       }
       // Redirect to dashboard after successful update
-      if(session){
-        session.user.isOnboarded = true;
+      if (session) {
+        session.user.isOnboarded = true
       }
-      router.push("/");
+      router.push("/")
     } catch (error) {
-      console.error("Error in handleComplete:", error);
+      console.error("Error in handleComplete:", error)
     }
-  };
+  }
+
+  const handleOnboardingMethodSelect = (selectedId: string) => {
+    setOnboardingMethod(selectedId)
+    if (selectedId === "plaid") {
+      // Implement Plaid onboarding logic here
+      console.log("Plaid onboarding selected")
+      // For now, we'll just move to the final step
+      setStep(steps.length - 1)
+    } else {
+      // Move to the next step for manual onboarding
+      handleNextStep()
+    }
+  }
 
   return (
-    <div className="flex items-center justify-center align-center p-4">  
-      <Card className="w-full max-w-md mt-[50px]">
+    <div className="flex flex-col text-left sm:w-9/10 md:w-3/5 mx-auto justify-center align-center p-4">  
+      <Greeting name={session?.user?.name} />
+      <Card className="w-full mt-[30px] rounded-sm">
         <CardHeader>
           <CardTitle>{steps[step].title}</CardTitle>
           <CardDescription>{steps[step].description}</CardDescription>
@@ -120,6 +158,10 @@ export default function OnBoarding() {
               transition={{ duration: 0.3 }}
             >
               {step === 0 && (
+                <SelectCard options={onboardingOptions} onSelect={handleOnboardingMethodSelect} />
+              )}
+
+              {step === 1 && (
                 <Button
                   onClick={handleNextStep}
                   className="w-full"
@@ -129,7 +171,7 @@ export default function OnBoarding() {
                 </Button>
               )}
 
-              {step > 0 && step < steps.length - 1 && (
+              {step > 1 && step < steps.length - 1 && (
                 <form onSubmit={handleSubmit}>
                   <div className="space-y-4">
                     <Label htmlFor={steps[step].field}>{steps[step].description}</Label>
@@ -163,7 +205,7 @@ export default function OnBoarding() {
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
                   </motion.div>
                   <div className="space-y-2">
-                    You are all set to proceed! Enjoy Groovy for all your expense tracking needs
+                    You are all set to proceed! Enjoy FinTrack for all your expense tracking needs
                   </div>
                   <Button onClick={handleComplete} className="w-full">
                     Go to Dashboard
