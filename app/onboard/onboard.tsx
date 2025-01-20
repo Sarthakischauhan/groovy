@@ -15,7 +15,7 @@ import Greeting from '@/components/Greeting'
 
 export default function OnBoarding() {
   const router = useRouter()
-  const { data: session, status } = useSession() 
+  const { data: session, status, update } = useSession() 
   const [step, setStep] = useState(0)
   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null)
   const [financialInfo, setFinancialInfo] = useState({
@@ -76,7 +76,10 @@ export default function OnBoarding() {
   ]
 
   const handleNextStep = () => {
-    if (step < steps.length - 1) {
+    if (step === 0){
+      setStep(step + 1)
+    }
+    else if (step < steps.length - 1) {
       setStep(step + 1)
     }   
     if (step === steps.length - 2) {
@@ -119,7 +122,7 @@ export default function OnBoarding() {
       }
       // Redirect to dashboard after successful update
       if (session) {
-        session.user.isOnboarded = true
+        await update({ isOnboarded: true })
       }
       router.push("/")
     } catch (error) {
@@ -133,7 +136,6 @@ export default function OnBoarding() {
       // Implement Plaid onboarding logic here
       console.log("Plaid onboarding selected")
       // For now, we'll just move to the final step
-      setStep(steps.length - 1)
     } else {
       // Move to the next step for manual onboarding
       handleNextStep()
