@@ -33,7 +33,7 @@ export const ManagementHeader = ({users}) => {
   const handleSubmitExpense = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('expenses')
         .insert([
           {
@@ -44,11 +44,11 @@ export const ManagementHeader = ({users}) => {
             name: formData.name,
             user_id:session?.user?.id
           }
-        ]);
+        ])
 
       if (error) throw error;
 
-      console.log('Data inserted successfully:', data);
+      console.log('Data inserted successfully:');
       setIsActive(false);
       setFormData({ // Reset form after successful submission
         amount: 0,
@@ -64,14 +64,36 @@ export const ManagementHeader = ({users}) => {
 
   const handleSubmitIncome = async (e:React.FormEvent) => {
     e.preventDefault();
-    console.log("Hello working")
-  }
+    if (!formData.amount) return;
+    try{
+      const { data, error } = await supabase
+      .from('users')
+      .update({
+        current_balance: Number(current_balance) + Number(formData.amount)
+      })
+      .eq("id",session?.user?.id)
+
+      if (error) throw error;
+
+      console.log("Income updated successfuly");
+      setIsActive(false)
+      setFormData({ // Reset form after successful submission
+        amount: 0,
+        necessary: false,
+        date_posted: "",
+        type: "",
+        name: "",
+      });
+    } catch(error){
+      console.log("Error while updating income", error);
+    }
+  };
 
   const tiles = [
     { title: "Current Credit", icon: <ArrowUpIcon className="h-4 w-4 text-red-500" />, amount:current_credit, actions:[<Button onClick={(e) => handleModal(true, "addExpense")}>Add Expense</Button>] },
     { title: "Current Balance", icon: <Wallet className="h-4 w-4 text-green-500" />, amount:current_balance, actions:[<Button onClick={(e) => handleModal(true, "addIncome")}>Add Income</Button>]},
     { title: "Estimated Income", icon: <TrendingUpIcon className="h-4 w-4 text-purple-500" />, amount:incoming_income, actions:[<Button onClick={(e) => handleModal(true, "addIncome")}>Add Income</Button>]},
-    { title: "Estimates expenses", icon: <CalendarIcon className="h-4 w-4 text-blue-500" />, amount:estimated_expenses, actions:[] },
+    { title: "Estimates expenses", icon: <CalendarIcon className="h-4 w-4 text-blue-500" />, amount:estimated_expenses, actions:[<Button onClick={(e) => handleModal(true,"addExpense")}>Add Expense</Button>] },
   ]
   return (
     <>
