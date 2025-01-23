@@ -30,13 +30,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return true 
       }
       user.isOnboarded = data?.isOnboarded
+      user.id = data?.id
       return true;
     },
 
     async jwt({ token, user, trigger, session }) {
       if (user) {
+        console.log("jwt user",user)
         token.isLoggedIn = true;
         token.isOnboarded = user.isOnboarded;
+        token.id = user.id;
       }
 
       // Handle updates to the token when session is updated
@@ -53,11 +56,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.isOnboarded = newSession.isOnboarded;
         console.log("this was run on trigger")
       }
-
       if (session?.user) {
         session.user.isLoggedIn = token.isLoggedIn;
         session.user.isOnboarded = token.isOnboarded;
-        session.user.id = token.sub;
+        session.user.id = token.id;
       }
       
       return session;
