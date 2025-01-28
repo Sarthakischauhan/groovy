@@ -1,8 +1,8 @@
 "use client"
-import React from 'react'
+import React, {useState} from 'react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent,  CardFooter } from './ui/Card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/Carousel"
-import { Wallet, ArrowUpIcon, CalendarIcon, TrendingUpIcon } from "lucide-react";
+import { Wallet, ArrowUpIcon, CalendarIcon, TrendingUpIcon, ChevronLeftCircle } from "lucide-react";
 import supabase from "utils/supabase";
 import Greeting from './Greeting';
 import useModal from "@/hooks/useModal"
@@ -12,10 +12,14 @@ import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Expense } from './ExpenseTable/ExpenseInterface';
 import { useSession } from "next-auth/react"
+import { DatePicker } from './ui/DatePicker';
+import { ChevronRightIcon } from '@radix-ui/react-icons';
+import { Checkbox } from './ui/checkbox';
 
 export const ManagementHeader = ({users}) => {
   const {data: session, status } = useSession() 
   const { currentMode, handleModal, isActive, setIsActive } = useModal();
+  const [ necessaryChecked, setNecessaryChecked ] = useState(false);
   const {current_credit,incoming_income, current_balance, name, estimated_expenses} = users && users[0];
   const [formData, setFormData] = React.useState<Expense>({
     amount: 0,
@@ -38,7 +42,7 @@ export const ManagementHeader = ({users}) => {
         .insert([
           {
             amount: Number(formData.amount), // Convert to number
-            necessary: formData.necessary,
+            necessary: necessaryChecked,
             date_posted: formData.date_posted || new Date().toISOString(),
             type: "credit",
             name: formData.name,
@@ -145,25 +149,29 @@ export const ManagementHeader = ({users}) => {
             <div className="flex flex-col gap-4 py-4">
               <div>
                 <Label htmlFor="item" className="text-right">Name</Label>
-                <Input id="item" name="name" value={formData.name} onChange={handleInputChange} className="col-span-3" />
+                <Input id="item" name="name" value={formData.name} onChange={handleInputChange} className="col-span-3 rounded-sm focus:outline-none" />
               </div>
               <div>
                 <Label htmlFor="money" className="text-right">Amount</Label>
-                <Input id="money" name="amount" type="number" value={formData.amount} onChange={handleInputChange} className="col-span-3" />
+                <Input id="money" name="amount" type="number" value={formData.amount} onChange={handleInputChange} className="col-span-3 rounded-sm focus:outline-none" />
               </div>
-              {currentMode === 'addExpense' && (
-                <div>
-                  <Label htmlFor="necessary" className="text-right">Was this necessary?</Label>
-                  <Input type="checkbox" id="necessary" name="necessary" checked={formData.necessary} onChange={handleInputChange} />
-                </div>
-              )}
               <div>
                 <Label htmlFor="time" className="text-right">Time</Label>
                 <Input id="time" name="date_posted" type="datetime-local" value={formData.date_posted} onChange={handleInputChange} className="col-span-3" />
+                {/* <DatePicker /> */}
               </div>  
             </div>
-            <DialogFooter>
-              <Button type="submit" className="w-full">Save</Button>
+            <DialogFooter className='flex sm:justify-between justify-between sm:flex'>
+              {currentMode === 'addExpense' && (
+                  <div className='flex items-center space-x-2'>
+                    <Checkbox id="necessity" name="necessary" checked={necessaryChecked} onCheckedChange={() => setNecessaryChecked(!necessaryChecked)} />
+                    <Label htmlFor="necessary" className="text-right text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Was this necessary?</Label>
+                  </div>
+                )}
+              <Button type="submit" className="w-2/5 rounded-full items-center">
+                Add
+                <ChevronRightIcon />
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
