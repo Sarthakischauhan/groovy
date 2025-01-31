@@ -31,7 +31,7 @@ const  ExpenseTable:React.FC<ExpenseTableProps> = ({expenses}) =>{
           <div className="flex items-center space-x-4">
             <TileImage>
               <div className={`p-2 rounded-full ${expense.necessary ? 'bg-green-100' : 'bg-red-100'}`}>
-                {getCategoryIcon(expense.type)}
+                {expense.emoji  ? expense.emoji : getCategoryIcon(expense.type)} 
               </div>
             </TileImage>
             <TileInfo>

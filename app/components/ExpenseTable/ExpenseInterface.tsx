@@ -4,6 +4,7 @@ export interface Expense{
     date_posted: string;
     type:string;
     name:string;
+    emoji:string;
 }
 
 export interface ExpenseTableProps {

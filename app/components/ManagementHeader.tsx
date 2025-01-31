@@ -16,12 +16,20 @@ import { DatePicker } from './ui/DatePicker';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { Checkbox } from './ui/checkbox';
 
+interface FormDataInterface {
+  amount: number;
+  necessary: boolean;
+  date_posted: string;
+  type:string;
+  name:string;
+} 
+
 export const ManagementHeader = ({users}) => {
   const {data: session, status } = useSession() 
   const { currentMode, handleModal, isActive, setIsActive } = useModal();
   const [ necessaryChecked, setNecessaryChecked ] = useState(false);
   const {current_credit,incoming_income, current_balance, name, estimated_expenses} = users && users[0];
-  const [formData, setFormData] = React.useState<Expense>({
+  const [formData, setFormData] = React.useState<FormDataInterface>({
     amount: 0,
     necessary: false,
     date_posted: "",
@@ -37,6 +45,14 @@ export const ManagementHeader = ({users}) => {
   const handleSubmitExpense = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const enrichResponse = await fetch("/api/enrich",{
+        method: 'POST',
+        body: JSON.stringify({
+          name: formData.name
+        })
+      })
+      const { name, emoji } = await enrichResponse.json()
+
       const { error } = await supabase
         .from('expenses')
         .insert([
@@ -45,8 +61,9 @@ export const ManagementHeader = ({users}) => {
             necessary: necessaryChecked,
             date_posted: formData.date_posted || new Date().toISOString(),
             type: "credit",
-            name: formData.name,
-            user_id:session?.user?.id
+            name: name,
+            user_id:session?.user?.id, 
+            emoji: emoji 
           }
         ])
 
@@ -101,7 +118,7 @@ export const ManagementHeader = ({users}) => {
   ]
   return (
     <>
-      <Greeting name={name} />
+      <Greeting name={name} existingUser={session?.user?.isOnboarded} />
       <Carousel
       opts={{
         align: "start",
