@@ -20,7 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"],
-      "utils/*": ["./utils/*"]
+      "utils/*": ["./utils/*"],
+      "ui/*":["./app/components/ui/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/ui/Card.js", "types/**/*.ts" ],
