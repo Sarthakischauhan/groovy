@@ -23,7 +23,7 @@ interface NavbarProps{};
 const Navbar: React.FC<NavbarProps> = async () => {
   const session = await auth();
   return (
-    <nav className="sm:w-9/10 md:w-3/5 mx-auto flex items-center justify-between p-4 bg-white text-black">
+    <nav className="sm:w-9/10 md:w-4/5 lg:w-3/5 mx-auto flex items-center justify-between p-4 bg-white text-black">
       <div className="text-2xl font-bold font-antonio"><a href="/">Groovy</a></div>
       {session?.user?.isLoggedIn && 
         <div className="space-x-4 flex items-center">

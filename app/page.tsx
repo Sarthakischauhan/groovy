@@ -8,27 +8,41 @@ export const revalidate = 60;
 import { SessionProvider } from "next-auth/react";
 
 const fetchUserData = async (email : string) => {
-  const { data, error } = await supabase.from("users").select("*").eq("email", email).single();
-  if (error) {
-    console.error("User fetch error:", error.message);
-    return null;
+  try{
+    const response = await fetch(process.env.URL + "/api/fetch-users", {
+      method: 'POST',
+      body: JSON.stringify({
+        email : email
+      })
+    })
+    if (response.status == 200 ){
+      const { user, error } = await response.json()
+      return user 
+    }
   }
-  return data;
+  catch (err){
+    console.log(err)
+  }
 };
 
 
 const fetchExpensesData = async (userId : number) => {
-  const { data, error } = await supabase
-    .from("expenses")
-    .select("*")
-    .eq("user_id", userId)
-    .gte("date_posted", getDateWeekBack())
-    .order("date_posted", { ascending: false });
-  if (error) {
-    console.error("Expenses fetch error:", error.message);
-    return [];
+  try{
+    const response = await fetch(process.env.URL + "/api/fetch-expenses", {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: userId,
+        date_posted: getDateWeekBack()
+      })
+    })
+    if (response.status == 200 ){
+      const { expenses, error } = await response.json()
+      return expenses
+    }
   }
-  return data;
+  catch (err){
+    console.log(err)
+  }
 };
 
 export default async function Home() {
@@ -46,11 +60,11 @@ export default async function Home() {
     <>
       <SessionProvider session={session}>
         {(userData && session?.user?.isLoggedIn) ? (
-          <div className="sm:w-9/10 md:w-3/5 mx-auto">
+          <div className="sm:w-9/10 md:w-4/5 lg:w-3/5 mx-auto">
             <ManagementHeader users={[userData]} />
             <div className="w-full">
               <h1 className="w-full p-4 text-l md:text-3xl font-semibold font-inter">Recent Expense</h1>
-              <ExpenseTable expenses={expenses} />
+              <ExpenseTable expenses={expenses ? expenses : []} />
             </div>
           </div>
         ) : (
