@@ -41,12 +41,12 @@ const  ExpenseTable:React.FC<ExpenseTableProps> = ({expenses}) =>{
             </TileInfo>
           </div>
           <TileSecondInfo className="flex items-center space-x-4">
-            <Badge variant={expense.necessary ? "secondary" : "outline"} className={`${expense.necessary ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"}`}>
+            <Badge variant={expense.necessary ? "secondary" : "outline"} className={`${expense.necessary ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"} hidden sm:block`}>
                 {expense.necessary ? 'Needed' : 'Not Needed'}
             </Badge>
             <p className="font-bold">${expense.amount.toFixed(2)}</p>
-            <div className="flex space-x-2 opacity-0 group-hover:opacity-100">
-              <ExpenseSheet expense={expense} />
+            <div className="flex space-x-2 sm:opacity-0 sm:group-hover:opacity-100">
+                <ExpenseSheet expense={expense} />
             </div>
           </TileSecondInfo>
         </Tile>

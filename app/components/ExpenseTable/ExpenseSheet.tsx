@@ -7,7 +7,7 @@ import {
     SheetTrigger,
   } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/Button"
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, EllipsisVertical } from "lucide-react";
 import { Expense } from "./ExpenseInterface";
 import moment from "moment";
 import { Badge } from "@/components/ui/Badge";
@@ -20,7 +20,8 @@ export function ExpenseSheet({ expense }: ExpenseSheetProps) {
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="ghost">
-                        <ArrowRight className="h-4 w-4" />
+                        <EllipsisVertical className="h-4 w-4 sm:hidden" />
+                        <ArrowRight className="h-4 w-4 hidden sm:block" />
                     </Button>
                 </SheetTrigger>
                 <SheetContent>
