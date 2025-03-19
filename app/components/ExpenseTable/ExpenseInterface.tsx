@@ -10,3 +10,6 @@ export interface Expense{
 export interface ExpenseTableProps {
     expenses : Expense[];
 }
+export interface ExpenseSheetProps {
+    expense: Expense;
+  }
