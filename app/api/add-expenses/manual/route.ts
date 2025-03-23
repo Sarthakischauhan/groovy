@@ -1,16 +1,17 @@
 import { NextResponse } from 'next/server'
 import supabase from 'utils/supabase'
-
+import { createExpenseSchema } from '../validations'
 
 export async function POST(req:Request){
     const requestData = await req.json()
-    const { amount, necessary, date_posted, type, user_id, name, emoji } = requestData
+    const validatedData = createExpenseSchema.parse(requestData)
+    const { amount, necessary, date_posted, type, user_id, name, emoji } = validatedData 
 
     const { data: insertedData, error } = await supabase
     .from('expenses')
     .insert([
       {
-        amount: amount, // Convert to number
+        amount: amount, 
         necessary: necessary,
         date_posted: date_posted,
         type: "credit",
@@ -20,13 +21,13 @@ export async function POST(req:Request){
       }
     ])
     if (error){
-        return new Response(
+        return new NextResponse(
             JSON.stringify({ error: error.message }), 
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
     }
 
-    return new Response(
+    return new NextResponse(
       JSON.stringify({ success: true, data: insertedData }), 
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
