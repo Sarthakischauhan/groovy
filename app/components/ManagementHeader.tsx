@@ -53,10 +53,9 @@ export const ManagementHeader = ({users}) => {
       })
       const { name, emoji } = await enrichResponse.json()
 
-      const { error } = await supabase
-        .from('expenses')
-        .insert([
-          {
+      const insertResponse = await fetch("/api/add-expenses/manual/",{
+        method: 'POST', 
+        body: JSON.stringify({
             amount: Number(formData.amount), // Convert to number
             necessary: necessaryChecked,
             date_posted: formData.date_posted || new Date().toISOString(),
@@ -64,8 +63,10 @@ export const ManagementHeader = ({users}) => {
             name: name,
             user_id:session?.user?.id, 
             emoji: emoji 
-          }
-        ])
+        })
+      }) 
+      
+      const { status, data, error} = await insertResponse.json()
 
       if (error) throw error;
 
