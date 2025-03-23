@@ -51,8 +51,8 @@ export default async function Home() {
   let expenses = [] as Expense[];
   if (session) {
     userData = await fetchUserData(session?.user?.email as string);
-    if (userData) {
-      expenses = await fetchExpensesData(2);
+    if (userData?.id) {
+      expenses = await fetchExpensesData(userData.id);
     }
   }
 
