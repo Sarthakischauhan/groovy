@@ -116,10 +116,10 @@ export const ManagementHeader = ({users}) => {
   };
 
   const tiles = [
-    { title: "Current Credit", icon: <ArrowUpIcon className="h-4 w-4 text-red-500" />, amount:current_credit, actions:[<Button onClick={(e) => handleModal(true, "addExpense")}>Add Expense</Button>] },
-    { title: "Current Balance", icon: <Wallet className="h-4 w-4 text-green-500" />, amount:current_balance, actions:[<Button onClick={(e) => handleModal(true, "addIncome")}>Add Income</Button>]},
-    { title: "Estimated Income", icon: <TrendingUpIcon className="h-4 w-4 text-purple-500" />, amount:incoming_income, actions:[<Button onClick={(e) => handleModal(true, "addIncome")}>Add Income</Button>]},
-    { title: "Estimates expenses", icon: <CalendarIcon className="h-4 w-4 text-blue-500" />, amount:estimated_expenses, actions:[<Button onClick={(e) => handleModal(true,"addExpense")}>Add Expense</Button>] },
+    { key:1, title: "Current Credit", icon: <ArrowUpIcon className="h-4 w-4 text-red-500" />, amount:current_credit, actions:[<Button key={1} onClick={(e) => handleModal(true, "addExpense")}>Add Expense</Button>] },
+    { key:2,title: "Current Balance", icon: <Wallet className="h-4 w-4 text-green-500" />, amount:current_balance, actions:[<Button key={2} onClick={(e) => handleModal(true, "addIncome")}>Add Income</Button>]},
+    { key:3,title: "Estimated Income", icon: <TrendingUpIcon className="h-4 w-4 text-purple-500" />, amount:incoming_income, actions:[<Button key={3} onClick={(e) => handleModal(true, "addIncome")}>Add Income</Button>]},
+    { key:4,title: "Estimates expenses", icon: <CalendarIcon className="h-4 w-4 text-blue-500" />, amount:estimated_expenses, actions:[<Button key={4} onClick={(e) => handleModal(true,"addExpense")}>Add Expense</Button>] },
   ]
   return (
     <>
@@ -132,7 +132,7 @@ export const ManagementHeader = ({users}) => {
     >
       <CarouselContent>
         {tiles.map((item, index) => (
-          <CarouselItem key={index} className="md:basis-1/2">
+          <CarouselItem key={item.key} className="md:basis-1/2">
             <div className="p-1">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
