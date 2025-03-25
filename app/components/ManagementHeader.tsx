@@ -24,7 +24,15 @@ interface FormDataInterface {
   name:string;
 } 
 
-export const ManagementHeader = ({users}) => {
+interface UserPropsManagementHeader {
+  current_credit: number;
+  incoming_income: number;
+  current_balance: number;
+  name: string;
+  estimated_expenses: number;
+}
+
+export const ManagementHeader = ({users}: { users: UserPropsManagementHeader[] }) => {
   const {data: session, status } = useSession() 
   const { currentMode, handleModal, isActive, setIsActive } = useModal();
   const [ necessaryChecked, setNecessaryChecked ] = useState(false);

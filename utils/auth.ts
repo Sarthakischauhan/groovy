@@ -57,11 +57,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         console.log("this was run on trigger")
       }
       if (session?.user) {
-        session.user.isLoggedIn = token.isLoggedIn;
-        session.user.isOnboarded = token.isOnboarded;
-        session.user.id = token.id;
+        session.user.isLoggedIn = token.isLoggedIn as boolean | undefined;
+        session.user.isOnboarded = token.isOnboarded as boolean | undefined;
+        session.user.id = token.id as string;
       }
-      
       return session;
     }
   }

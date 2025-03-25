@@ -2,7 +2,7 @@ export interface Option {
     id: string
     title: string
     desc: string
-    icon: Element 
+    icon: React.ReactNode; 
 }
 
 export interface CardSelectProps {
