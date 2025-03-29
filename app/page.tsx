@@ -4,13 +4,16 @@ import supabase from "utils/supabase";
 import { Expense } from "@/components/ExpenseTable/ExpenseInterface";
 import { ManagementHeader } from "./components/ManagementHeader";
 import { getDateWeekBack } from "utils/utils";
-export const revalidate = 60;
 import { SessionProvider } from "next-auth/react";
+import { headers } from "next/headers";
+
+export const revalidate = 60;
 
 const fetchUserData = async (email : string) => {
   try{
     const response = await fetch(process.env.URL + "/api/fetch-users", {
       method: 'POST',
+      headers: headers(),
       body: JSON.stringify({
         email : email
       })
@@ -30,6 +33,7 @@ const fetchExpensesData = async (userId : number) => {
   try{
     const response = await fetch(process.env.URL + "/api/fetch-expenses", {
       method: 'POST',
+      headers:headers(),
       body: JSON.stringify({
         userId: userId,
         date_posted: getDateWeekBack()

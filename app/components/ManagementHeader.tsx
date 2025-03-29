@@ -15,7 +15,6 @@ import { useSession } from "next-auth/react"
 import { DatePicker } from './ui/DatePicker';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { Checkbox } from './ui/checkbox';
-
 interface FormDataInterface {
   amount: number;
   necessary: boolean;
